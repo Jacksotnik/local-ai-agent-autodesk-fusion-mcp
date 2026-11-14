@@ -1,0 +1,19 @@
+{
+  "note": "English translation of raw_api_dev.json for models that understand Russian poorly (Nemotron, 2026-11-12). Same ids, starts, references, volumes and answers; only the prompts are translated. Source note: Tasks with NO helper (2026-11-02): can the model find the Fusion API in the docs and write raw adsk code? Tunable; measure before and after the prompt rule about fusion_api_docs. A-square-tube-arc moved to basics_dev once pipe() learned arcs and square sections; the torus and the ellipse stay without a helper.",
+  "cases": [
+    {
+      "id": "A-torus",
+      "prompt": "Make a doughnut (torus): outer diameter 60 mm, ring thickness 12 mm, vertical axis, center at the origin.",
+      "start": null,
+      "reference": "sk = new_sketch('XZ')\ncircle(sk, 24, 0, 12)\nrevolve(sk, 'Z')",
+      "volume": "2*math.pi**2*24*6*6"
+    },
+    {
+      "id": "A-ellipse-disk",
+      "prompt": "Make an elliptical plate: an ellipse with axes of 60 and 40 mm, 5 mm thick, center at the origin.",
+      "start": null,
+      "reference": "sk = new_sketch('XY')\nsk.sketchCurves.sketchEllipses.add(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create(3, 0, 0), adsk.core.Point3D.create(0, 2, 0))\nextrude(sk, 5)",
+      "volume": "math.pi*30*20*5"
+    }
+  ]
+}

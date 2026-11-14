@@ -1,0 +1,125 @@
+{
+  "note": "English translation of basics_dev.json for models that understand Russian poorly (Nemotron, 2026-11-12). Same ids, starts, references, volumes and answers; only the prompts are translated. Source note: Sweep, loft, taper, rib, angled hole, combine, move, text (tunable set, 2026-11-02). Volumes by hand where a formula exists; null = held by size.",
+  "cases": [
+    {
+      "id": "B-bent-pipe",
+      "prompt": "Make a tube with an outer diameter of 10 mm and a 6 mm bore along the path: from point (0, 0) to (60, 0), then to (60, 40), in the XY plane, bend radius 15 mm.",
+      "start": null,
+      "reference": "pipe([(0, 0), (60, 0), (60, 40)], 10, inner_diameter=6, plane='XY', bend_radius=15)",
+      "volume": "math.pi*(10*10 - 6*6)/4*(45 + 25 + math.pi/2*15)"
+    },
+    {
+      "id": "B-rod-path",
+      "prompt": "Make a rod 8 mm in diameter bent into an L shape: 50 mm along X, then 30 mm up along Z, from point (0, 0, 0), bend radius 10 mm.",
+      "start": null,
+      "reference": "pipe([(0, 0), (50, 0), (50, 30)], 8, plane='XZ', bend_radius=10)",
+      "volume": "math.pi*16*(40 + 20 + math.pi/2*10)"
+    },
+    {
+      "id": "B-spring",
+      "prompt": "Make a spring: wire 2 mm, mean diameter 20 mm, pitch 6 mm, 5 turns.",
+      "start": null,
+      "reference": "spring(2, 20, 6, 5)",
+      "volume": null,
+      "size": [
+        22,
+        22,
+        32
+      ]
+    },
+    {
+      "id": "B-loft-square-round",
+      "prompt": "Make an adapter: at the bottom a circle 40 mm in diameter at height 0, at the top a 30 by 30 mm square at a height of 50 mm, solid.",
+      "start": null,
+      "reference": "sk1 = new_sketch('XY', offset=0)\ncircle(sk1, 0, 0, 40)\nsk2 = new_sketch('XY', offset=50)\nrect_center(sk2, 0, 0, 30, 30)\nloft([sk1, sk2])",
+      "volume": null,
+      "size": [
+        40,
+        40,
+        50
+      ]
+    },
+    {
+      "id": "B-frustum",
+      "prompt": "Make a truncated cone: base diameter 40 mm, top diameter 20 mm, height 30 mm.",
+      "start": null,
+      "reference": "cylinder(40, 30, base=(0, 0, 0), taper=-math.degrees(math.atan(10/30)))",
+      "volume": "math.pi*30/3*(20*20 + 20*10 + 10*10)"
+    },
+    {
+      "id": "B-gusset",
+      "prompt": "Make a plate 60 by 40 mm, 5 mm thick; at its left short edge (x = 0) a wall 5 mm thick and 30 mm high, and between the plate and the wall, in the middle, a gusset: 20 mm along the plate, 20 mm along the wall, 4 mm thick.",
+      "start": null,
+      "reference": "box(60, 40, 5, corner=(0, 0, 0))\nbox(5, 40, 30, corner=(0, 0, 5), operation='join')\ngusset(20, 20, 4, corner=(5, 20, 5), along='X')",
+      "volume": "60*40*5 + 5*40*30 + 20*20/2*4"
+    },
+    {
+      "id": "B-angled-hole",
+      "prompt": "Make a block 60 by 40 mm, 20 mm high, and drill a through hole 6 mm in diameter in it, tilted 30 degrees from vertical, entering at the center of the top face.",
+      "start": null,
+      "reference": "box(60, 40, 20, corner=(0, 0, 0))\nangled_hole(30, 20, 20, 6, 30, tilt_axis='X')",
+      "volume": "60*40*20 - math.pi*9*20/math.cos(math.radians(30))"
+    },
+    {
+      "id": "B-subtract-bodies",
+      "prompt": "Make a block 50 by 50 mm, 30 mm high, and a separate sphere 20 mm in diameter with its center on the axis, 30 mm above the bottom of the block, then subtract the sphere from the block.",
+      "start": null,
+      "reference": "box(50, 50, 30, corner=(-25, -25, 0))\nsphere(20, center=(0, 0, 30))\nsubtract('Body1', 'Body2')",
+      "volume": "50*50*30 - 2.0/3*math.pi*10**3"
+    },
+    {
+      "id": "B-move-copy",
+      "prompt": "Make a 20 mm cube at the origin, make a copy of it shifted 40 mm along X, and join both into one body with a 20 by 10 mm bridge, 5 mm thick, lying in the gap between them at the bottom.",
+      "start": null,
+      "reference": "box(20, 20, 20, corner=(0, 0, 0))\ncopy_body('Body1', dx=40)\nbox(20, 10, 5, corner=(20, 5, 0), operation='join')",
+      "volume": "2*8000 + 20*10*5"
+    },
+    {
+      "id": "B-engrave",
+      "prompt": "Make a plate 80 by 30 mm, 3 mm thick, and cut the text \"AB\" into its top: letters 15 mm high, 1 mm deep, starting at point (10, 8).",
+      "start": null,
+      "reference": "box(80, 30, 3, corner=(0, 0, 0))\nengrave('AB', 15, 1, corner=(10, 8, 3))",
+      "volume": null,
+      "size": [
+        80,
+        30,
+        3
+      ]
+    },
+    {
+      "id": "B-square-tube-arc",
+      "prompt": "Make a square tube 10 by 10 mm with a 2 mm wall, bent along a quarter-circle arc of radius 40 mm in the XY plane: from point (40, 0, 0) to point (0, 40, 0), arc center at the origin.",
+      "start": null,
+      "reference": "pipe([(40, 0), (28.28, 28.28, 'arc'), (0, 40)], 10, inner_diameter=6, plane='XY', section='square')",
+      "volume": "(100 - 36)*math.pi/2*40"
+    },
+    {
+      "id": "B-bracket-lug",
+      "prompt": "Make a bracket: base 80 by 40 mm, 8 mm thick; at the back edge (y = 0) an upright 10 mm thick, 30 mm wide, centered, 60 mm high; on top of the upright a lug 40 mm in diameter, 10 mm thick, with a horizontal 22 mm hole, axis along Y, the lug center 20 mm above the top of the upright.",
+      "start": null,
+      "reference": "box(80, 40, 8, corner=(0, 0, 0))\nbox(30, 10, 60, corner=(25, 0, 8), operation='join')\nlug(40, 22, 10, center=(40, 5, 88), axis='Y')",
+      "volume": "80*40*8 + 30*10*60 + math.pi/4*(40*40 - 22*22)*10"
+    },
+    {
+      "id": "B-plate-lobes",
+      "prompt": "Make a plate 6 mm thick with this outline: the back edge straight from (0, 40) to (60, 40), the side edges straight, the front corners are round lobes of radius 8 mm with centers (8, 8) and (52, 8), and between the lobes the front edge curves inward in an arc from (16, 8) through (30, 16) to (44, 8).",
+      "start": null,
+      "reference": "plate([(0, 40), (0, 8), (8, 0, 'arc'), (16, 8), (30, 16, 'arc'), (44, 8), (52, 0, 'arc'), (60, 8), (60, 40)], 6)",
+      "volume": "(60*40 - 4*(64 - 16*math.pi) - 28*8 - (16.25**2*math.acos(8.25/16.25) - 8.25*math.sqrt(2*16.25*8 - 64)))*6"
+    },
+    {
+      "id": "B-lug-plate",
+      "prompt": "Make an upright plate 8 mm thick: at the bottom it stands on the line from x = 0 to x = 60 at height 0, at the top it ends in a lug 30 mm in diameter with a 16 mm hole, lug center (30, 0, 60), hole axis along Y; the sides of the plate are tangent to the lug circle.",
+      "start": null,
+      "reference": "lug(30, 16, 8, center=(30, 0, 60), axis='Y', stands_on=(0, 60, 0))",
+      "volume": "((60 + 2*((30 + 15*math.cos(math.atan2(-60, 30) + math.acos(15/math.hypot(30, 60)))) - 30))/2*(60 + 15*math.sin(math.atan2(-60, 30) + math.acos(15/math.hypot(30, 60)))) + 225*math.acos(((60 + 15*math.sin(math.atan2(-60, 30) + math.acos(15/math.hypot(30, 60)))) - 60)/15) - ((60 + 15*math.sin(math.atan2(-60, 30) + math.acos(15/math.hypot(30, 60)))) - 60)*math.sqrt(225 - ((60 + 15*math.sin(math.atan2(-60, 30) + math.acos(15/math.hypot(30, 60)))) - 60)**2) - math.pi*8*8)*8"
+    },
+    {
+      "id": "B-leaning-gussets",
+      "prompt": "Make a plate 60 by 40 mm, 6 mm thick; on it, flush with the back edge, stands a wall 8 mm thick (y from 32 to 40) across the full width, 50 mm high above the plate; on the front face of the wall two leaning ribs 5 mm thick: each 20 mm along the plate and 40 mm along the wall, the rib feet 15 mm from the side edges (x = 15 and x = 45), the top of each rib shifted 10 mm toward the middle.",
+      "start": null,
+      "reference": "box(60, 40, 6, corner=(0, 0, 0))\nbox(60, 8, 50, corner=(0, 32, 6), operation='join')\ngusset(20, 40, 5, corner=(15, 32, 6), lean=10)\ngusset(20, 40, 5, corner=(45, 32, 6), lean=-10)",
+      "volume": "60*40*6 + 60*8*50 + 2*(20*40/2*5) - 2*20*(2.5**2/2)*(10/40)"
+    }
+  ]
+}

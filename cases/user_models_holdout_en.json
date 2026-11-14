@@ -1,0 +1,143 @@
+{
+  "note": "English translation of user_models_holdout.json for models that understand Russian poorly (Nemotron, 2026-11-12). Same ids, starts, references, volumes and answers; only the prompts are translated. Source note: The user opened their own model and asks, in plain words, to change it or asks about it. HONEST set: written before any tuning; the prompt must never be tuned on its failures. Measure it only with a finished configuration and record the numbers before looking at the failures. Same format as user_models_dev.json.",
+  "start_prelude": "user_models_prelude.py",
+  "cases": [
+    {
+      "id": "V-flange-bigger-bore",
+      "prompt": "Make the hole in the center 16 mm.",
+      "start": "build_user_flange()",
+      "reference": "set_parameter('BoreD', 16)",
+      "volume": "math.pi*(30*30*8 + 15*15*20 - 8*8*28)"
+    },
+    {
+      "id": "V-flange-taller-hub",
+      "prompt": "Make the boss on top taller: 30 mm.",
+      "start": "build_user_flange()",
+      "reference": "set_parameter('HubH', 30)",
+      "volume": "math.pi*(30*30*8 + 15*15*30 - 6*6*38)"
+    },
+    {
+      "id": "V-flange-ask-outer",
+      "prompt": "What is the outer diameter of the part?",
+      "start": "build_user_flange()",
+      "reference": "pass",
+      "volume": "math.pi*(30*30*8 + 15*15*20 - 6*6*28)",
+      "answer": [
+        [
+          60,
+          6
+        ]
+      ]
+    },
+    {
+      "id": "V-flange-ask-hole",
+      "prompt": "What diameter is the hole in the middle?",
+      "start": "build_user_flange()",
+      "reference": "pass",
+      "volume": "math.pi*(30*30*8 + 15*15*20 - 6*6*28)",
+      "answer": [
+        [
+          12,
+          1.2
+        ]
+      ]
+    },
+    {
+      "id": "V-flange-list-parameters",
+      "prompt": "List the model's parameters.",
+      "start": "build_user_flange()",
+      "reference": "pass",
+      "volume": "math.pi*(30*30*8 + 15*15*20 - 6*6*28)",
+      "answer": [
+        [
+          60,
+          6
+        ],
+        [
+          8,
+          0.8
+        ],
+        [
+          30,
+          3
+        ],
+        [
+          20,
+          2
+        ],
+        [
+          12,
+          1.2
+        ]
+      ]
+    },
+    {
+      "id": "V-block-wider",
+      "prompt": "Make the block wider, 50 mm instead of 40.",
+      "start": "build_rounded_block()",
+      "reference": "set_parameter('d2', 50)",
+      "volume": "(70*50 - (4 - math.pi)*4*4)*25"
+    },
+    {
+      "id": "V-block-bigger-rounding",
+      "prompt": "Make the rounded corners bigger, 8 mm.",
+      "start": "build_rounded_block()",
+      "reference": "set_parameter('d6', 8)",
+      "volume": "(70*40 - (4 - math.pi)*8*8)*25"
+    },
+    {
+      "id": "V-block-drill",
+      "prompt": "Drill a 10 mm hole through from the top, in the middle.",
+      "start": "build_rounded_block()",
+      "reference": "drill(35, 20, 0, 10, axis='Z')",
+      "volume": "(70*40 - (4 - math.pi)*4*4)*25 - math.pi*5*5*25"
+    },
+    {
+      "id": "V-block-ask-size",
+      "prompt": "What are the dimensions of the block?",
+      "start": "build_rounded_block()",
+      "reference": "pass",
+      "volume": "(70*40 - (4 - math.pi)*4*4)*25",
+      "answer": [
+        [
+          70,
+          7
+        ],
+        [
+          40,
+          4
+        ],
+        [
+          25,
+          2.5
+        ]
+      ]
+    },
+    {
+      "id": "V-block-ask-rounding",
+      "prompt": "What is the radius of the rounded corners?",
+      "start": "build_rounded_block()",
+      "reference": "pass",
+      "volume": "(70*40 - (4 - math.pi)*4*4)*25",
+      "answer": [
+        [
+          4,
+          0.4
+        ]
+      ]
+    },
+    {
+      "id": "V-block-ask-weight",
+      "prompt": "How much does the block weigh?",
+      "start": "build_rounded_block()",
+      "reference": "pass",
+      "volume": "(70*40 - (4 - math.pi)*4*4)*25",
+      "answer": [
+        [
+          546.8,
+          0.5468
+        ]
+      ]
+    }
+  ]
+}
