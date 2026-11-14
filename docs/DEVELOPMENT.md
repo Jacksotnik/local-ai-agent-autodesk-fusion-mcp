@@ -81,7 +81,8 @@ size, round faces and body count.
 - **Dev sets** (`plain_dev`, `revolve_dev`, `parts_dev`, `edits_dev`, `steps_dev`, ...) may be tuned on;
   a failure seen on an honest set is reproduced on a dev set first, then fixed and measured there.
 - English copies with the same ids and references (`*_en.json`) exist for `plain_dev`, `revolve_dev`,
-  `parts_dev`, `edits_dev`, `steps_dev`, `plain_holdout8` and the Gallery sets.
+  `parts_dev`, `edits_dev`, `steps_dev`, `basics_dev`, `raw_api_dev`, `plain_holdout8`, `user_models_holdout`
+  and the Gallery sets.
 - `cases/expected_signatures.json` caches the references; delete it after a change to `cad_api.py` and
   run `tools/run_cases.py <sets> --check-references`.
 
